@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health Support Assistant</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .chat-container {
+            height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 80%;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: messageAppear 0.3s forwards;
+        }
+
+        @keyframes messageAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .user-message {
+            background-color: #e3f2fd;
+            margin-left: auto;
+        }
+
+        .assistant-message {
+            background-color: #f5f5f5;
+            margin-right: auto;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        #user-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .crisis-resources {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .crisis-resources h3 {
+            color: #856404;
+            margin-top: 0;
+        }
+
+        .crisis-resources ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .typing-indicator {
+            display: none;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+            width: fit-content;
+        }
+
+        .typing-indicator span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #9e9e9e;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: typing 1s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .exercise-section {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+
+        .exercise-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .exercise-title i {
+            margin-right: 8px;
+        }
+
+        .steps-container {
+            margin: 15px 0;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            padding: 8px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .step-number {
+            background-color: #4CAF50;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex-grow: 1;
+        }
+
+        .tip-box {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .action-button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+        .start-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .start-button:hover {
+            background-color: #45a049;
+        }
+
+        .skip-button {
+            background-color: #f5f5f5;
+            color: #666;
+        }
+
+        .skip-button:hover {
+            background-color: #e0e0e0;
+        }
+
+        .timer {
+            display: none;
+            margin-top: 10px;
+            font-size: 1.2em;
+            color: #2c3e50;
+        }
+
+        .progress-indicator {
+            display: none;
+            margin-top: 10px;
+            height: 4px;
+            background-color: #e0e0e0;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: #4CAF50;
+            width: 0%;
+            transition: width 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mental Health Support Assistant</h1>
+    <div class="container">
+        <div class="chat-container" id="chat-container"></div>
+        <div class="typing-indicator" id="typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="input-container">
+            <input type="text" id="user-input" placeholder="How are you feeling today?">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+    <div class="crisis-resources" id="crisis-resources">
+        <h3>Emergency Resources</h3>
+        <ul>
+            <li>National Suicide Prevention Lifeline: 988</li>
+            <li>Crisis Text Line: Text HOME to 741741</li>
+            <li>Emergency Services: 911</li>
+        </ul>
+    </div>
+
+    <script>
+        const crisisResources = {
+            "National Suicide Prevention Lifeline": "988",
+            "Crisis Text Line": "Text HOME to 741741",
+            "Emergency Services": "911"
+        };
+
+        const copingStrategies = {
+            "stress": [
+                {
+                    title: "Deep Breathing Exercise",
+                    steps: [
+                        "Find a comfortable position",
+                        "Inhale deeply through your nose for 4 counts",
+                        "Hold your breath for 4 counts",
+                        "Exhale slowly through your mouth for 4 counts",
+                        "Repeat 5 times"
+                    ],
+                    tip: "This exercise helps calm your nervous system and reduce stress hormones."
+                },
+                {
+                    title: "5-4-3-2-1 Grounding Technique",
+                    steps: [
+                        "Look around and name 5 things you can see",
+                        "Focus on 4 things you can touch",
+                        "Listen for 3 things you can hear",
+                        "Notice 2 things you can smell",
+                        "Find 1 thing you can taste"
+                    ],
+                    tip: "This technique helps bring your focus to the present moment and reduce anxiety."
+                },
+                {
+                    title: "Quick Stress Relief",
+                    steps: [
+                        "Take a 5-minute walk",
+                        "Do some gentle stretches",
+                        "Listen to calming music",
+                        "Write down your thoughts",
+                        "Drink a glass of water"
+                    ],
+                    tip: "These quick activities can help break the stress cycle and refresh your mind."
+                }
+            ],
+            "anxiety": [
+                {
+                    title: "Progressive Muscle Relaxation",
+                    steps: [
+                        "Start with your feet, tense muscles for 5 seconds",
+                        "Release and notice the difference",
+                        "Move up to your calves, then thighs",
+                        "Continue with hands, arms, shoulders",
+                        "Finish with face and neck muscles"
+                    ],
+                    tip: "This exercise helps release physical tension that often accompanies anxiety."
+                },
+                {
+                    title: "Box Breathing Technique",
+                    steps: [
+                        "Inhale through your nose for 4 seconds",
+                        "Hold your breath for 4 seconds",
+                        "Exhale through your mouth for 4 seconds",
+                        "Hold your breath for 4 seconds",
+                        "Repeat for 5 cycles"
+                    ],
+                    tip: "This breathing pattern helps regulate your nervous system and reduce anxiety symptoms."
+                },
+                {
+                    title: "Mindfulness Exercise",
+                    steps: [
+                        "Find a quiet space",
+                        "Close your eyes and focus on your breath",
+                        "Notice any thoughts without judgment",
+                        "Gently bring your focus back to breathing",
+                        "Continue for 5-10 minutes"
+                    ],
+                    tip: "Regular mindfulness practice can help reduce anxiety over time."
+                }
+            ],
+            "overwhelm": [
+                {
+                    title: "Task Breakdown Method",
+                    steps: [
+                        "Write down all tasks that feel overwhelming",
+                        "Break each task into smaller steps",
+                        "Prioritize the most important tasks",
+                        "Set realistic timeframes for each step",
+                        "Start with the easiest task first"
+                    ],
+                    tip: "Breaking tasks into smaller pieces makes them more manageable and less overwhelming."
+                },
+                {
+                    title: "Time Management Exercise",
+                    steps: [
+                        "Create a daily schedule",
+                        "Include regular breaks",
+                        "Set specific time blocks for tasks",
+                        "Prioritize self-care activities",
+                        "Review and adjust as needed"
+                    ],
+                    tip: "A structured schedule can help reduce feelings of being overwhelmed."
+                },
+                {
+                    title: "Quick Reset Exercise",
+                    steps: [
+                        "Step away from your current task",
+                        "Take 5 deep breaths",
+                        "Drink some water",
+                        "Do a quick stretch",
+                        "Return with a fresh perspective"
+                    ],
+                    tip: "Taking short breaks can help prevent burnout and maintain productivity."
+                }
+            ]
+        };
+
+        const supportiveMessages = [
+            "I'm here to support you. Let's try a quick exercise to help you feel better.",
+            "I understand this is difficult. Here's a practical exercise that might help.",
+            "You're not alone in this. Let me suggest a technique that could help right now.",
+            "Taking care of your mental health is important. Here's something you can try immediately."
+        ];
+
+        // Conversation state
+        let conversationState = {
+            currentTopic: null,
+            previousResponses: [],
+            sentimentHistory: [],
+            followUpQuestions: {
+                "stress": [
+                    "How has this stress been affecting your daily life?",
+                    "What specific situations are causing you the most stress?",
+                    "Have you tried any coping strategies before?",
+                    "Would you like to explore more ways to manage stress?"
+                ],
+                "anxiety": [
+                    "What situations tend to trigger your anxiety?",
+                    "How does anxiety typically manifest for you?",
+                    "Have you found any techniques that help you feel more grounded?",
+                    "Would you like to practice some anxiety-reducing exercises together?"
+                ],
+                "overwhelm": [
+                    "What specific tasks or responsibilities are feeling overwhelming?",
+                    "How do you usually handle overwhelming situations?",
+                    "What support systems do you have in place?",
+                    "Would you like help breaking down your tasks into smaller steps?"
+                ]
+            }
+        };
+
+        function analyzeSentiment(text) {
+            const positiveWords = ['happy', 'good', 'great', 'better', 'improve', 'progress', 'hope', 'excited', 'joy', 'peace', 'wonderful', 'amazing', 'fantastic', 'delighted', 'content', 'calm', 'relaxed', 'positive', 'optimistic', 'grateful'];
+            const negativeWords = ['sad', 'bad', 'terrible', 'worse', 'anxious', 'stress', 'overwhelm', 'fear', 'worried', 'depressed', 'angry', 'frustrated', 'tired', 'exhausted', 'nervous', 'scared', 'lonely', 'hurt', 'upset', 'disappointed'];
+            
+            let sentimentScore = 0;
+            const words = text.toLowerCase().split(/\s+/);
+            
+            words.forEach(word => {
+                if (positiveWords.includes(word)) sentimentScore += 1;
+                if (negativeWords.includes(word)) sentimentScore -= 1;
+            });
+            
+            return sentimentScore;
+        }
+
+        function showTypingIndicator() {
+            document.getElementById('typing-indicator').style.display = 'block';
+        }
+
+        function hideTypingIndicator() {
+            document.getElementById('typing-indicator').style.display = 'none';
+        }
+
+        function addMessage(message, isUser = false) {
+            const chatContainer = document.getElementById('chat-container');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'assistant-message'}`;
+            messageDiv.textContent = message;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function createExerciseMessage(exercise, topic = null) {
+            let message = document.createElement('div');
+            message.className = 'message assistant-message';
+            
+            let exerciseSection = document.createElement('div');
+            exerciseSection.className = 'exercise-section';
+            
+            // Title
+            let title = document.createElement('div');
+            title.className = 'exercise-title';
+            title.innerHTML = `📌 ${exercise.title}`;
+            exerciseSection.appendChild(title);
+            
+            // Steps container
+            let stepsContainer = document.createElement('div');
+            stepsContainer.className = 'steps-container';
+            
+            exercise.steps.forEach((step, index) => {
+                let stepDiv = document.createElement('div');
+                stepDiv.className = 'step';
+                
+                let stepNumber = document.createElement('div');
+                stepNumber.className = 'step-number';
+                stepNumber.textContent = index + 1;
+                
+                let stepContent = document.createElement('div');
+                stepContent.className = 'step-content';
+                stepContent.textContent = step;
+                
+                stepDiv.appendChild(stepNumber);
+                stepDiv.appendChild(stepContent);
+                stepsContainer.appendChild(stepDiv);
+            });
+            
+            exerciseSection.appendChild(stepsContainer);
+            
+            // Tip box
+            let tipBox = document.createElement('div');
+            tipBox.className = 'tip-box';
+            tipBox.innerHTML = `💡 <strong>Tip:</strong> ${exercise.tip}`;
+            exerciseSection.appendChild(tipBox);
+            
+            // Action buttons
+            let actionButtons = document.createElement('div');
+            actionButtons.className = 'action-buttons';
+            
+            let startButton = document.createElement('button');
+            startButton.className = 'action-button start-button';
+            startButton.textContent = 'Start Exercise';
+            startButton.onclick = function() {
+                startExercise(exercise);
+            };
+            
+            let skipButton = document.createElement('button');
+            skipButton.className = 'action-button skip-button';
+            skipButton.textContent = 'Skip for Now';
+            
+            actionButtons.appendChild(startButton);
+            actionButtons.appendChild(skipButton);
+            exerciseSection.appendChild(actionButtons);
+            
+            message.appendChild(exerciseSection);
+            return message;
+        }
+
+        function startExercise(exercise) {
+            let currentStep = 0;
+            const totalSteps = exercise.steps.length;
+            
+            function updateProgress() {
+                const progress = (currentStep / totalSteps) * 100;
+                const progressBar = document.querySelector('.progress-bar');
+                if (progressBar) {
+                    progressBar.style.width = `${progress}%`;
+                }
+            }
+            
+            function showNextStep() {
+                if (currentStep < totalSteps) {
+                    const step = exercise.steps[currentStep];
+                    addMessage(`Step ${currentStep + 1}: ${step}`, false);
+                    currentStep++;
+                    updateProgress();
+                    
+                    if (currentStep < totalSteps) {
+                        setTimeout(showNextStep, 3000); // Wait 3 seconds before showing next step
+                    } else {
+                        addMessage("Great job! You've completed the exercise. How do you feel now?", false);
+                    }
+                }
+            }
+            
+            // Show progress indicator
+            let progressIndicator = document.createElement('div');
+            progressIndicator.className = 'progress-indicator';
+            progressIndicator.style.display = 'block';
+            
+            let progressBar = document.createElement('div');
+            progressBar.className = 'progress-bar';
+            progressIndicator.appendChild(progressBar);
+            
+            document.querySelector('.exercise-section').appendChild(progressIndicator);
+            
+            // Start the exercise
+            showNextStep();
+        }
+
+        function getResponse(userInput) {
+            userInput = userInput.toLowerCase();
+            
+            // Analyze sentiment
+            const sentimentScore = analyzeSentiment(userInput);
+            
+            // Check for crisis keywords
+            const crisisKeywords = ["suicide", "kill myself", "end it all", "can't go on", "emergency"];
+            if (crisisKeywords.some(keyword => userInput.includes(keyword))) {
+                document.getElementById('crisis-resources').style.display = 'block';
+                return "I'm really concerned about your safety. Please consider reaching out to one of these resources immediately. You don't have to go through this alone. Professional help is available and can make a difference.";
+            }
+
+            // Handle positive sentiment
+            if (sentimentScore > 0) {
+                const positiveResponses = [
+                    "That's wonderful to hear! 😊 I'm glad you're feeling positive. Feel free to reach out if you need any emotional support in the future.",
+                    "Great to hear you're doing well! 🌟 Remember, I'm here if you ever need emotional assistance.",
+                    "I'm so happy to hear you're feeling good! 💫 Don't hesitate to contact me if you need any support later.",
+                    "That's fantastic! 🎉 I'm here for you whenever you need emotional guidance or support."
+                ];
+                
+                return positiveResponses[Math.floor(Math.random() * positiveResponses.length)];
+            }
+
+            // Check for topic change or new conversation
+            let currentTopic = null;
+            if (["stress", "stressed", "overwhelmed", "too much"].some(word => userInput.includes(word))) {
+                currentTopic = "stress";
+            } else if (["anxiety", "anxious", "nervous", "worried"].some(word => userInput.includes(word))) {
+                currentTopic = "anxiety";
+            } else if (["overwhelm", "too much", "can't handle"].some(word => userInput.includes(word))) {
+                currentTopic = "overwhelm";
+            }
+
+            // Generate response with immediate solution
+            if (currentTopic) {
+                const strategies = copingStrategies[currentTopic];
+                const strategy = strategies[Math.floor(Math.random() * strategies.length)];
+                return createExerciseMessage(strategy, currentTopic);
+            } else {
+                // If no specific topic, provide general support with an exercise
+                const generalExercises = [
+                    {
+                        title: "Quick Mood Boost",
+                        steps: [
+                            "Take 3 deep breaths",
+                            "Stand up and stretch",
+                            "Drink a glass of water",
+                            "Think of one thing you're grateful for",
+                            "Smile for 30 seconds"
+                        ],
+                        tip: "These simple actions can help improve your mood quickly."
+                    },
+                    {
+                        title: "Mindful Moment",
+                        steps: [
+                            "Pause what you're doing",
+                            "Notice your surroundings",
+                            "Take a deep breath",
+                            "Check in with your body",
+                            "Return to your task with fresh energy"
+                        ],
+                        tip: "Taking mindful breaks can help maintain mental well-being."
+                    }
+                ];
+                
+                const exercise = generalExercises[Math.floor(Math.random() * generalExercises.length)];
+                return createExerciseMessage(exercise);
+            }
+        }
+
+        function sendMessage() {
+            const userInput = document.getElementById('user-input');
+            const message = userInput.value.trim();
+            
+            if (message) {
+                addMessage(message, true);
+                userInput.value = '';
+                
+                showTypingIndicator();
+                
+                // Simulate thinking time based on message length
+                const thinkingTime = Math.min(1000 + message.length * 50, 3000);
+                
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    const response = getResponse(message);
+                    if (typeof response === 'string') {
+                        addMessage(response);
+                    } else {
+                        document.getElementById('chat-container').appendChild(response);
+                        document.getElementById('chat-container').scrollTop = document.getElementById('chat-container').scrollHeight;
+                    }
+                }, thinkingTime);
+            }
+        }
+
+        // Handle Enter key press
+        document.getElementById('user-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Initial greeting
+        setTimeout(() => {
+            addMessage("Welcome! I'm here to listen and provide support. How are you feeling today?");
+        }, 500);
+    </script>
+</body>
+</html> 

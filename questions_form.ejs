@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Self-Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+        }
+        button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Student Self-Analysis</h2>
+        <form id="studentForm">
+            <label>1. How would you describe yourself in three words?</label>
+            <textarea required></textarea>
+            
+            <label>2. What do you think are your biggest strengths and weaknesses?</label>
+            <textarea required></textarea>
+            
+            <label>3. How do you handle stress or difficult situations?</label>
+            <textarea required></textarea>
+            
+            <label>4. What is the biggest challenge you face in school?</label>
+            <textarea required></textarea>
+            
+            <label>5. How do you usually make new friends?</label>
+            <textarea required></textarea>
+            
+            <label>6. What are your dreams or goals for the future?</label>
+            <textarea required></textarea>
+            
+            <button type="button" onclick="submitForm()">Submit</button>
+        </form>
+        <p id="message"></p>
+    </div>
+    
+    <script>
+        function submitForm() {
+            document.getElementById("message").innerText = "Thank you for your responses!";
+            document.getElementById("studentForm").reset();
+        }
+    </script>
+</body>
+</html>

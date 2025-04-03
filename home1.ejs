@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health Services</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            text-align: center;
+            color: #fff;
+        }
+        h1 {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 80%;
+            max-width: 400px;
+        }
+        .option-button {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            background: #ffffff;
+            color: #333;
+        }
+        .option-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        .arrow {
+            font-size: 1.5em;
+            color: #2575fc;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome <%= name %></h1>
+    <h1>Select Your Option</h1>
+    <div class="button-container">
+        <button class="option-button" onclick="location.href='AI_assistance.html'">
+            Mental Health Support AI Assistant <span class="arrow">→</span>
+        </button>
+        <button class="option-button" onclick="location.href='indexM.html'">
+            Mental Health Analysis <span class="arrow">→</span>
+        </button>
+    </div>
+</body>
+</html>

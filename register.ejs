@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <form id="registrationForm" class="registration-form" action="/register_submit" method="post">
+            <h2>Register</h2>
+            <div class="form-group">
+                <input type="text" id="username" name="username" required>
+                <label for="username">Username</label>
+                <span class="error-message" id="username-error"></span>
+            </div>
+            <div class="form-group">
+                <input type="text" id="username" name="age" required>
+                <label for="age">Age</label>
+                <span class="error-message" id="username-error"></span>
+            </div>
+            <div class="form-group">
+                <input type="text" id="username" name="std" required>
+                <label for="std">Standard</label>
+                <span class="error-message" id="username-error"></span>
+            </div>
+            <div class="form-group">
+                <input type="email" id="email" name="email" required>
+                <label for="email">Email</label>
+                <span class="error-message" id="email-error"></span>
+            </div>
+            <div class="form-group">
+                <input type="password" id="password" name="password" required>
+                <label for="password">Password</label>
+                <span class="error-message" id="password-error"></span>
+            </div>
+            <div class="form-group">
+                <input type="password" id="confirm-password" name="confirm-password" required>
+                <label for="confirm-password">Confirm Password</label>
+                <span class="error-message" id="confirm-password-error"></span>
+            </div>
+            <button type="submit" class="submit-btn">Register</button>
+            <p class="login-link">Already have an account? <a href="/login">Login</a></p>
+        </form>
+    </div>
+    <% if(locals.error){ %>
+        <!-- <script src="/alert.js"></script> -->
+        <script>alert("Email already registered!");</script>
+        <% } %>
+    <% if(locals.msg){ %>
+        <!-- <script src="/alert.js"></script> -->
+        <script>alert("Email successfully registered, now you can proceed login!");</script>
+        <% } %>
+    <script src="/script.js"></script>
+</body>
+</html>

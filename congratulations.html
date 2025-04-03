@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Congratulations!</title>
+    <link rel="stylesheet" href="stylesM.css">
+    <style>
+        .congrats-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .congrats-card h2 {
+            color: #4a90e2;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+        .congrats-card p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+        .tips-list {
+            text-align: left;
+            margin: 2rem 0;
+            padding: 0 2rem;
+        }
+        .tips-list li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        .tips-list li:before {
+            content: "✓";
+            color: #4CAF50;
+            position: absolute;
+            left: 0;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.8rem 1.5rem;
+            background-color: #4a90e2;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .back-btn:hover {
+            background-color: #357abd;
+        }
+        .emoji {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="congrats-card">
+            <div class="emoji">🎉</div>
+            <h2>Congratulations!</h2>
+            <p>Your mental health assessment shows that you're in a great position to focus on your studies!</p>
+            
+            <h3>Keep Up the Good Work!</h3>
+            <ul class="tips-list">
+                <li>Continue practicing your current healthy habits</li>
+                <li>Maintain a good balance between study and relaxation</li>
+                <li>Stay connected with friends and family</li>
+                <li>Keep up with regular physical activity</li>
+                <li>Practice mindfulness and stress management techniques</li>
+            </ul>
+
+            <p>Remember, maintaining good mental health is an ongoing process. Keep up these positive habits!</p>
+            
+            <a href="indexM.html" class="back-btn">Back to Assessment</a>
+
+        </div>
+    </div>
+</body>
+</html> 
